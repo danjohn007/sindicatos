@@ -14,7 +14,7 @@ class DashboardController {
     }
 
     public function index() {
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
         
         // Get dashboard statistics
         $stats = $this->request->getDashboardStats();

@@ -26,15 +26,18 @@ class User {
     }
 
     public function authenticate($username, $password) {
+        // Use simple hash for demo mode (SQLite compatible)
+        $hash = hash('sha256', $password);
+        
         $query = "SELECT id, username, email, full_name, role, department, is_active 
                   FROM " . $this->table_name . " 
                   WHERE (username = :username OR email = :username) 
-                  AND password = SHA2(:password, 256) 
+                  AND password = :password 
                   AND is_active = 1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':password', $hash);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {

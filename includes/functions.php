@@ -18,7 +18,7 @@ spl_autoload_register(function ($className) {
     $directories = ['models', 'controllers', 'includes'];
     
     foreach ($directories as $directory) {
-        $file = __DIR__ . '/' . $directory . '/' . $className . '.php';
+        $file = __DIR__ . '/../' . $directory . '/' . $className . '.php';
         if (file_exists($file)) {
             require_once $file;
             return;
@@ -69,7 +69,7 @@ function require_role($required_roles) {
     }
 }
 
-function get_current_user() {
+function get_logged_user() {
     if (is_logged_in()) {
         return [
             'id' => $_SESSION['user_id'],

@@ -16,7 +16,7 @@ class RequestController {
     }
 
     public function index() {
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
         
         // Get filters from URL
         $filters = [];
@@ -118,7 +118,7 @@ class RequestController {
                 }
 
                 // Log the creation
-                $current_user = get_current_user();
+                $current_user = get_logged_user();
                 $this->request->logUpdate($current_user['id'], 'comment', 'Solicitud creada');
 
                 // Auto-assign based on department (simple rule)
@@ -156,7 +156,7 @@ class RequestController {
         }
 
         // Check permissions
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
         if ($current_user['role'] === 'representante' && 
             $current_user['department'] !== $request_data['department']) {
             header('Location: index.php?page=requests&error=access_denied');
@@ -198,7 +198,7 @@ class RequestController {
         }
 
         // Check permissions
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
         if ($current_user['role'] === 'representante' && 
             $current_user['department'] !== $request_data['department']) {
             header('Location: index.php?page=requests&error=access_denied');
@@ -258,7 +258,7 @@ class RequestController {
             if ($this->request->update()) {
                 // Log status change if it occurred
                 if ($old_status !== $this->request->status) {
-                    $current_user = get_current_user();
+                    $current_user = get_logged_user();
                     $this->request->logUpdate($current_user['id'], 'status_change', 
                         "Estado cambiado de '$old_status' a '{$this->request->status}'", 
                         $old_status, $this->request->status);
@@ -294,7 +294,7 @@ class RequestController {
         }
 
         $new_status = sanitize_input($_POST['status'] ?? '');
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
 
         if ($this->request->updateStatus($new_status, $current_user['id'])) {
             flash_message('success', 'Estado actualizado exitosamente.');
@@ -320,7 +320,7 @@ class RequestController {
 
         $comment = sanitize_input($_POST['comment'] ?? '');
         $is_internal = isset($_POST['is_internal']) ? 1 : 0;
-        $current_user = get_current_user();
+        $current_user = get_logged_user();
 
         if (!empty($comment)) {
             if ($this->request->logUpdate($current_user['id'], 'comment', $comment, null, null, $is_internal)) {
@@ -372,7 +372,7 @@ class RequestController {
             // Assign to the first available representative
             foreach ($users as $user_data) {
                 if ($user_data['role'] === 'representante') {
-                    $current_user = get_current_user();
+                    $current_user = get_logged_user();
                     $this->request->assign($user_data['id'], $current_user['id']);
                     break;
                 }
