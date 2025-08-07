@@ -1,3 +1,19 @@
+<?php
+// Ensure current_user is properly initialized to prevent undefined variable warnings
+if (!isset($current_user) || !$current_user) {
+    $current_user = get_logged_user();
+    if (!$current_user) {
+        // Redirect to login if user data is not available
+        header('Location: index.php?page=login');
+        exit;
+    }
+}
+
+// Ensure configuration constants are available (should be included via config/config.php)
+if (!defined('USER_ROLES')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+?>
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">
         <i class="fas fa-tachometer-alt"></i> Panel de Control
