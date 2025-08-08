@@ -6,14 +6,14 @@
 
 // Database configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'sindicatos_crm');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'fix360_sindicato');      // Updated to match requirements
+define('DB_USER', 'fix360_sindicato');      // Updated to match requirements  
+define('DB_PASS', 'Danjohn007');            // Updated to match requirements
 
 // Application settings
 define('APP_NAME', 'Sistema CRM Sindicatos');
 define('APP_VERSION', '1.0.0');
-define('BASE_URL', 'http://localhost/sindicatos/');
+define('BASE_URL', 'https://fix360.app/sindicato/');  // Updated base URL as per requirements
 
 // Upload settings
 define('UPLOAD_PATH', 'assets/uploads/');
@@ -71,7 +71,7 @@ define('DEPARTMENTS', [
 date_default_timezone_set('America/Mexico_City');
 
 // Error reporting
-if ($_SERVER['SERVER_NAME'] === 'localhost') {
+if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 } else {

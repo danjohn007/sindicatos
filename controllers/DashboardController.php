@@ -14,7 +14,13 @@ class DashboardController {
     }
 
     public function index() {
+        // Initialize current user for the dashboard view to prevent undefined variable warnings
         $current_user = get_logged_user();
+        if (!$current_user) {
+            // Fallback if user data is not available - redirect to login
+            header('Location: index.php?page=login');
+            exit;
+        }
         
         // Get dashboard statistics
         $stats = $this->request->getDashboardStats();

@@ -1,5 +1,19 @@
 <?php
 require_once __DIR__ . '/../../includes/functions.php';
+// Ensure current_user is properly initialized to prevent undefined variable warnings
+if (!isset($current_user) || !$current_user) {
+    $current_user = get_logged_user();
+    if (!$current_user) {
+        // Redirect to login if user data is not available
+        header('Location: index.php?page=login');
+        exit;
+    }
+}
+
+// Ensure configuration constants are available (should be included via config/config.php)
+if (!defined('USER_ROLES')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
 ?>
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">
@@ -154,9 +168,7 @@ require_once __DIR__ . '/../../includes/functions.php';
                     <div>
                         <strong><?php echo htmlspecialchars($request['folio']); ?></strong><br>
                         <small class="text-muted"><?php echo htmlspecialchars(substr($request['subject'], 0, 40)) . '...'; ?></small><br>
-                        <span class="badge bg-<?php echo $request['status'] === 'recibido' ? 'warning' : ($request['status'] === 'resuelto' ? 'success' : 'info'); ?>">
-                            <?php echo REQUEST_STATUS[$request['status']]; ?>
-                        </span>
+                        <span class="badge bg-<?php echo $request['status'] === 'recibido' ? 'warning' : ($request['status'] === 'resuelto' ? 'success' : 'info'); ?>"><?php echo REQUEST_STATUS[$request['status']]; ?></span>
                     </div>
                     <div>
                         <a href="index.php?page=requests&action=view&id=<?php echo $request['id']; ?>" class="btn btn-sm btn-outline-primary">
@@ -188,9 +200,7 @@ require_once __DIR__ . '/../../includes/functions.php';
                         <div>
                             <strong><?php echo htmlspecialchars($request['folio']); ?></strong><br>
                             <small class="text-muted"><?php echo htmlspecialchars(substr($request['subject'], 0, 30)) . '...'; ?></small><br>
-                            <span class="badge bg-<?php echo $request['request_type'] === 'queja' ? 'danger' : ($request['request_type'] === 'sugerencia' ? 'info' : 'secondary'); ?>">
-                                <?php echo REQUEST_TYPES[$request['request_type']]; ?>
-                            </span>
+                            <span class="badge bg-<?php echo $request['request_type'] === 'queja' ? 'danger' : ($request['request_type'] === 'sugerencia' ? 'info' : 'secondary'); ?>"><?php echo REQUEST_TYPES[$request['request_type']]; ?></span>
                             <small class="text-muted d-block"><?php echo time_ago($request['created_at']); ?></small>
                         </div>
                         <div>
