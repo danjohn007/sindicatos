@@ -6,9 +6,9 @@
 
 class Database {
     private $host = 'localhost';
-    private $db_name = 'sindicatos_crm';
-    private $username = 'root';
-    private $password = '';
+    private $db_name = 'fix360_sindicato';  // Updated database name as per requirements
+    private $username = 'fix360_sindicato'; // Updated username as per requirements
+    private $password = 'Danjohn007';       // Updated password as per requirements
     private $charset = 'utf8mb4';
     public $conn;
 
